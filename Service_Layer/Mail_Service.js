@@ -1,9 +1,10 @@
 const nodemailer = require('nodemailer');
 async function SendMail(req) {
     // const { to, subject, text } = req.body;
-    const to = 'nithesh.codeflink@gmail.com';
-    subject = 'Test for hosting';
-    text = 'Hello world?';
+    const { full_name,e_mail, message} = req.body;
+    // const to = 'nithesh.codeflink@gmail.com';
+    // subject = 'Test for hosting';
+    // text = 'Hello world?';
     let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -13,9 +14,10 @@ async function SendMail(req) {
     });
     let mailOptions = {
         from: 'terionorganization@gmail.com', // Sender address
-        to: to, // List of recipients
-        subject: subject, // Subject line
-        text: text // Plain text body
+        to: e_mail, // List of recipients
+        subject: `Hello ${full_name}`, // Subject line
+        html: `<div><p>Your Response: <b>${message}</b>  - is taken into our consideration. Thanks for your feedback.</p></div>`
+        // text: <div><h2> Hello `${full_name}`</h2><p>Your Response : `${message}` : Is taken to our Consideration . Thanks for your feedback</p> </div>
     };
     try {
         console.log('Sending Mail ....');

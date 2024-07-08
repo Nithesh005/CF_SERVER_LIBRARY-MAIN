@@ -14,7 +14,14 @@ const Product = new Pool({
     password: "123" || process.env.DB_PASSWORD,
     port: 5432 || process.env.DB_PORT,
 });
+const MailServices = new Pool({
+    user: "postgres" || process.env.DB_USER,
+    host: "localhost" || process.env.DB_HOST,
+    database: "MailServices" || process.env.DB_NAME,
+    password: "123" || process.env.DB_PASSWORD,
+    port: 5432 || process.env.DB_PORT,
+});
 
 // const result = await pool.query('SELECT * FROM users');
 // res.json(result.rows);
-module.exports = {Product}
+module.exports = {Product,MailServices}

@@ -1,4 +1,4 @@
-const { Auth } = require("../Common_Layer/Insistance");
+const { Auth, MailServices } = require("../Common_Layer/Insistance");
 const { Product } = require("../Common_Layer/Insistance");
 
 async function AddBranch(req) {
@@ -26,5 +26,24 @@ async function AddBranch(req) {
     }
 }
 
+const Db_Instance = MailServices;
+async function AddMailData(req) {
+    // const { username, password } = req.body
+    const { full_name, e_mail, message, phone_number } = req.body;
+    console.log("hello dear model!", full_name, e_mail, message);
+    try {
+        await Db_Instance.query('BEGIN');
+        const InsertMailMessage = await Db_Instance.query(`INSERT INTO public."AvieraMail"(
+	"Full_name", "Phone_no", e_mail, message)
+	VALUES ($1, $2, $3, $4);`, [full_name, phone_number, e_mail, message]);
+        await Db_Instance.query('COMMIT'); // Commit transaction if successful
+        return ({ sts: true, msg: 'Message Added Successfully' });
+    } catch (err) {
+        await Db_Instance.query('ROLLBACK');
+        console.error('Error executing query', err.stack);
+        return ({ sts: false, msg: 'Faild to Add Message' });
+    }
+}
 
-module.exports = {AddBranch };
+
+module.exports = { AddBranch, AddMailData };

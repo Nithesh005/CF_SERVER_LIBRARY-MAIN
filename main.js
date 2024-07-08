@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
-const port = 501;
+// const port = 501;
+const port = 10000;
 // const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -12,13 +13,15 @@ const { verifyToken } = require('./Common_Layer/Verify_token');
 const Mail = require('./Service_Layer/Mail_Service');
 
 app.use(cors({
-    origin: 'http://localhost:3001', // Allow only this origin
+    origin: ['http://localhost:3001', 'http://localhost:5173'], // Allow only this origin
     methods: ['GET', 'POST'], // Specify the allowed methods
     allowedHeaders: ['Content-Type', 'Authorization'], // Specify the allowed headers
 }));
-app.use('/hey',async (req,res)=>{
-    const response = await entityActions['mail']['mailService'](req);
-    res.status(200).send(response);
+app.use('/hey', async (req, res) => {
+    // console.log(req.body);
+    console.log("sending");
+    // const response = await entityActions['mail']['mailService'](req);
+    // res.status(200).send(response);
 })
 app.post('/:action(insert|select|update|delete|mail)/:entity(branch|product|mailService)',
     //  verifyToken , 
@@ -58,8 +61,9 @@ const entityActions = {
         }
     },
     mail: {
-        mailService: Mail.SendMail,
+        mailService: Tech_Logic.MailLogic,
         mailService1: async (req) => {
+            console.log(req.body);
             return "Check mailService";
         },
     },
