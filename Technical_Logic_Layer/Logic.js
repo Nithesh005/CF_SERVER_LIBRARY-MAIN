@@ -8,9 +8,9 @@ async function AddBranch(req) {
     return AddBranch? "Branch Added Successfully" : "Failed to Add Branch";
 }
 async function MailLogic(req) {
-    const addDataInDb = await ModelLayer.AddMailData(req);
+    // const addDataInDb = await ModelLayer.AddMailData(req);
+    // console.log(addDataInDb.sts);
     const SendResponseMail = await SendMail(req);
-    console.log(addDataInDb.sts);
     console.log(SendResponseMail.sts);
     return SendResponseMail.sts;
     // return AddBranch? "Branch Added Successfully" : "Failed to Add Branch";
