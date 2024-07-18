@@ -17,13 +17,14 @@ app.use(cors({
     methods: ['GET', 'POST'], // Specify the allowed methods
     allowedHeaders: ['Content-Type', 'Authorization'], // Specify the allowed headers
 }));
-app.use('/hey', async (req, res) => {
+app.use('/test', async (req, res) => {
     // console.log(req.body);
     console.log("sending");
+    const data = [{name:'mathan',age:'23'},{name:'nithi',age:'23'},{name:'prem',age:'40'}];
     // const response = await entityActions['mail']['mailService'](req);
-    // res.status(200).send(response);
+    res.status(200).send(data);
 })
-app.post('/:action(insert|select|update|delete|mail)/:entity(branch|product|mailService)',
+app.post('/:action(insert|select|update|delete|mail)/:entity(branch|product|mailService|live_project)',
     //  verifyToken , 
     async (req, res) => {
         const { action, entity } = req.params;
@@ -58,7 +59,8 @@ const entityActions = {
         product: async (req) => {
             // Implement the select logic for product
             // return await getData.getProductDataIndividual(req);
-        }
+        },
+        live_project: Tech_Logic.Select_live_project
     },
     mail: {
         mailService: Tech_Logic.MailLogic,

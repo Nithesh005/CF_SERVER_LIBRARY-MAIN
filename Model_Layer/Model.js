@@ -1,6 +1,7 @@
 const { Auth, MailServices } = require("../Common_Layer/Insistance");
 const { Product } = require("../Common_Layer/Insistance");
-
+const { jm } = require("../Common_Layer/Insistance");
+const db_instance =jm;
 async function AddBranch(req) {
     const { username, password } = req.body
     console.log("hello dear model!", username);
@@ -19,6 +20,24 @@ async function AddBranch(req) {
 
     } catch (err) {
         await Product.query('ROLLBACK');
+        console.error('Error executing query', err.stack);
+        // throw new Error('Internal Server Error -Nithi');
+        return false;
+        // res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+async function Select_live_project(req) {
+    // const { username, password } = req.body
+    console.log("hello dear model!");
+    try {
+        await db_instance.query('BEGIN');
+        const Select_live_project = await db_instance.query(`SELECT "Project_id", "Action_by", "Action_time", "Project_name", "Customer_name", "CE_name", "CE_mobile_no", "Location", "Assigned_to", "Outlet_count", "Description", "Reference", "Reference_by"
+	FROM public."Project_reg";`);
+        const Select_live_project_row = Select_live_project.rows;
+        await db_instance.query('COMMIT');
+        return Select_live_project_row;
+    } catch (err) {
+        await db_instance.query('ROLLBACK');
         console.error('Error executing query', err.stack);
         // throw new Error('Internal Server Error -Nithi');
         return false;
@@ -46,4 +65,4 @@ async function AddMailData(req) {
 }
 
 
-module.exports = { AddBranch, AddMailData };
+module.exports = { AddBranch, AddMailData, Select_live_project };
